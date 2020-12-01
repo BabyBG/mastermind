@@ -1,5 +1,3 @@
-require 'pry'
-
 class GameBoard
   attr_accessor :rows
   def initialize
