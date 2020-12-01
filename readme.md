@@ -1,0 +1,1 @@
+A Ruby version of the code breaking game, Mastermind. Designed to be run in the console. Play with 1, 2, or no human players. Follow prompts in the console to assign players, and make guesses & codes.
