@@ -144,6 +144,7 @@ end
 #####################################
 
 def cpu_guess(prev_guesses, combinations)
+  a = [1, 2, 3, 4, 5, 6, 7]
   poss_num = Hash[a.map {|q| [q, 0]}] 
   poss_loc = {}
   last_key = prev_guesses.keys.last
@@ -151,7 +152,7 @@ def cpu_guess(prev_guesses, combinations)
 
   # remove impossible locations
   remove_loc(combinations, last_key) if last_value.count("b") == 0
-  delete_combo(last_value, last_key, poss_num, combinations)
+  delete_combo(last_value, last_key, poss_num, combinations, poss_loc)
 
   # add weight to possible locations   
   increment_poss_loc(last_value.count("b"), last_key, poss_loc)
@@ -184,7 +185,7 @@ def cpu_guess(prev_guesses, combinations)
 end
 
 # case statement counts match number, deletes impossible combinations array based on number of matches
-def delete_combo(last_value, last_key, poss_num, combinations)
+def delete_combo(last_value, last_key, poss_num, combinations, poss_loc)
   case last_value.count
   when 1..3
     increment_poss_num(last_value.count, last_key, poss_num, combinations)
@@ -198,6 +199,7 @@ def delete_combo(last_value, last_key, poss_num, combinations)
     end
   # no matches also remove entirely some poss_num
   else
+    puts poss_loc
     last_key.each do |s| 
       combinations.delete_if {|k, v| k.include?(s)}
       poss_num.delete_if {|k, v| k == s}
