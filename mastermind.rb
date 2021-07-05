@@ -1,3 +1,5 @@
+require 'io/console'
+
 ############################
 ## Board & Player classes ##
 ############################
@@ -10,6 +12,7 @@ class GameBoard
 
   # show_board prints board to console 
   def show_board
+    system 'clear'
     puts
     rows.each do |row|
       if row.class == Hash
@@ -86,7 +89,7 @@ end
 def make_hidden_code(codemaker)
   def ask_code()
     puts "Choose four numbers from 1-7 to create your secret code"
-    num = gets.chomp.split(//).map(&:to_i)
+    num = STDIN.noecho(&:gets).chomp.split(//).map(&:to_i)
     num.length == 4 && num.all? {|d| d.between?(1, 7)} ? num : num = ask_code()
   end
   if codemaker.human == true
@@ -310,7 +313,7 @@ def play_round(codemaker, codebreaker, p1, p2)
   prev_guesses = {} 
 
   #create spoiler wall if both players are human to conceal the code
-  spoiler() if p1.human == true && p2.human == true
+  system 'clear' if p1.human == true && p2.human == true
   guess_number = 1
   code_broken = false
   
@@ -354,9 +357,9 @@ def play_round(codemaker, codebreaker, p1, p2)
   end
 end
 
-#############################################################################################
-##Methods to output text for introduction screen, displaying scores & creating spoiler wall##
-#############################################################################################
+###################################################################
+##Methods to output text for introduction screen, displaying scores
+###################################################################
 def introductory_text()
   puts "Welcome to Mastermind. If you need a refresher on the rules please visit https://en.wikipedia.org/wiki/Mastermind_(board_game)"
   puts "Human vs. Human, CPU vs. Human, and CPU vs. CPU are all accepted."
@@ -373,15 +376,6 @@ def display_scores(p1, p2)
   puts "Type any character to play again, carrying over the players & scores. Leave blank to end program."
   puts "Press enter to confirm choice."
 end
-
-def spoiler()
-  80.times do
-    print "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-  end
-  print "\n"
-  print "NO PEEKING!"
-end
-
 
 ##call master_sequence and begin program
 master_sequence
